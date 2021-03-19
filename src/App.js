@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import "./styles.css";
 
 
@@ -21,26 +21,58 @@ import "./styles.css";
 
 function App() {
 
+
+ const [lista,setLista] = React.useState([]);
+ const [controle,setControle] = React.useState(0);
+
+    
+  React.useEffect(() =>
+  {
+     first();    
+  }, []);
+
+  React.useEffect(() =>
+  {
+    first();
+  }, [controle]);
+
+
+  const first = async () => {
+
+    const aux = await axios.get('http://localhost:3333/repositories');
+    setLista(aux.data);
+    
+  }
+
   async function handleAddRepository() {
-    // TODO
+
+    let a = Math.random().toString(16).substr(2, 8);
+    let b = Math.random().toString(16).substr(2, 8);
+    let c = Math.random().toString(16).substr(2, 8);
+
+    axios.post(`http://localhost:3333/repositories`,{title: a, url: `http://${b}.com`, techs: [c]}).then(setControle(controle+1));
+    
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    axios.delete(`http://localhost:3333/repositories/${id}`).then(setControle(controle+1));
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        <li>
-          Repositório 1
-
-          <button onClick={() => handleRemoveRepository(1)}>
-            Remover
-          </button>
-        </li>
+        { 
+          lista.map((l)=>(
+             <li key={l.id}> {l.title}
+                 <div>
+                    <button onClick={() => handleRemoveRepository(l.id)}>
+                    Remover
+                    </button>  
+                  </div>              
+             </li>
+          ))     
+        }
       </ul>
-
       <button onClick={handleAddRepository}>Adicionar</button>
     </div>
   );

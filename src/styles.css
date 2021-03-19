@@ -2,6 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: #fff;
+}
+
+html{
+  background-color: #262626;
 }
 
 body {
@@ -16,6 +21,10 @@ div {
 div li {
   display: flex;
   align-items: center;
+  border-style: dotted;
+  width: 200px;
+  flex: 1;
+  padding: 5px;
 }
 
 div li + li {
